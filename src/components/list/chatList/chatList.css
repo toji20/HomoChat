@@ -3,7 +3,6 @@
     overflow: scroll;
     scrollbar-width: thin;
     scrollbar-color: rgba(17, 25, 40, 0.5) transparent;
-    margin-right: -10px;
     
     .userProfile {
         display: flex;
