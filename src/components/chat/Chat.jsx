@@ -8,9 +8,10 @@ import { useUserStore } from '../../lib/userStore';
 import { supabase } from '../../lib/supabase';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
+import { useMediaQuery } from 'react-responsive';
 
 const Chat = () => {
-  const { isCurrentUserBlocked, isReceiverBlocked} = useChatStore()
+  const { isCurrentUserBlocked, isReceiverBlocked, changeChat } = useChatStore()
   const [img, setImg] = useState({
     file: null,
     url: ''
@@ -22,7 +23,13 @@ const Chat = () => {
   const { chatId, user } = useChatStore();
   const { currentUser } = useUserStore();
   
+  const isMobile = useMediaQuery({ maxWidth: 756 });
   const endRef = useRef(null);
+
+  // Функция для возврата к списку чатов
+  const handleBackToChats = () => {
+    changeChat(null, null);
+  };
 
   // Прокрутка к последнему сообщению
   useEffect(() => {
@@ -102,7 +109,7 @@ const Chat = () => {
       await updateDoc(doc(db, "chats", chatId), {
         messages: arrayUnion({
           senderId: currentUser.uid,
-          text,
+          text: text.trim(),
           ...(imgUrl && { img: imgUrl }),
           createdAt: new Date()
         })
@@ -121,7 +128,7 @@ const Chat = () => {
           if (chatIndex !== -1) {
             chats[chatIndex] = {
               ...chats[chatIndex],
-              lastMessage: text || "Image",
+              lastMessage: text.trim() || "Image",
               isSeen: id === currentUser.uid,
               updatedAt: Date.now()
             };
@@ -130,7 +137,7 @@ const Chat = () => {
         }
       }));
 
-      // Сбрасываем состояние
+// Сбрасываем состояние
       setImg({ file: null, url: '' });
       setText('');
     } catch (error) {
@@ -141,20 +148,28 @@ const Chat = () => {
     }
   };
 
-return (
+  return (
     <div className='chat'>
       <div className="top">
+        {/* Кнопка "Назад" для мобильных устройств */}
+        {isMobile && (
+          <button className="backButton" onClick={handleBackToChats}>
+            <img src="./arrow-big-left-dash.svg" alt="Back to chats" className='back'/>
+          </button>
+        )}
+        
         <div className="user">
           <img src={user?.avatar || "./avatar.png"} alt="" />
           <div className="texts">
-            <span>{user?.username || "Unknown"}</span>
+            <span className='userName'>{user?.username || "Unknown"}</span>
             <p>{chat?.lastMessage || "No messages yet"}</p>
           </div>
         </div>
+        
         <div className="icons">
-          <img src="./phone.png" alt="" />
-          <img src="./video.png" alt="" />
-          <img src="./info.png" alt="" />
+          <img src="./phone.png" alt="" className="icon"/>
+          <img src="./video.png" alt="" className="icon"/>
+          <img src="./info.png" alt="" className="icon"/>
         </div>
       </div>
       
@@ -162,18 +177,32 @@ return (
         {chat?.messages?.map((message) => (
           <div 
             className={`message ${message.senderId === currentUser?.uid ? "own" : ""}`} 
-            key={message.createdAt}
+            key={message.createdAt?.toDate?.() || message.createdAt}
           >
-            {message.img && <img src={message.img} alt="Sent content" className='messageImg'/>}
+            <img src={message.senderId === currentUser?.uid ? currentUser.avatar : user?.avatar} alt="" className='avatar' />
+            
             <div className="texts">
-              <p>{message.text}</p>
+              {message.img && (
+                <img src={message.img} alt="Sent content" className='messageImg'/>
+              )}
+              {message.text && (
+                <p>{message.text}</p>
+              )}
+              <span className="timestamp">
+                {message.createdAt?.toDate?.()?.toLocaleTimeString() || 
+                 new Date(message.createdAt).toLocaleTimeString()}
+              </span>
             </div>
           </div>
         ))}
         {img.url && (
           <div className="message own">
+            <img src={currentUser?.avatar} alt="" className='avatar' />
             <div className="texts">
-              <img src={img.url} alt="Preview"/>
+              <img src={img.url} alt="Preview" className='messageImg'/>
+              {text && (
+                <p>{text}</p>
+              )}
             </div>
           </div>
         )}
@@ -183,7 +212,7 @@ return (
       <div className="bottom">
         <div className="icons">
           <label htmlFor="file">
-            <img src="./img.png" alt="Attach file" />
+            <img src="./plus-circle.png" alt="Attach file" className='image-add-btn'/>
             <input 
               type="file" 
               id="file" 
@@ -192,28 +221,29 @@ return (
               accept="image/*"
             />
           </label>
-          <img src="./camera.png" alt="Take photo" />
-          <img src="./mic.png" alt="Record voice" />
         </div>
         
         <textarea
-          type="text" 
           placeholder='Type a message...'
           value={text}
           onChange={(e) => setText(e.target.value)}
           className='input'
           disabled={isCurrentUserBlocked || isReceiverBlocked}
+          rows="1"
         />
         
         <div className="emoji">
           <img 
-            src="./emoji.png" 
+            src="./smile.png" 
             alt="Emoji picker" 
             onClick={() => setOpen((prev) => !prev)}
+            className='img-emoji'
           />
-          <div className="picket">
-            <EmojiPicker open={open} onEmojiClick={handleEmoji}/>
-          </div>
+          {open && (
+            <div className="picker">
+              <EmojiPicker open={open} onEmojiClick={handleEmoji}/>
+            </div>
+          )}
         </div>
         
         <button 
@@ -221,7 +251,7 @@ return (
           onClick={handleSend}
           disabled={isLoading || isCurrentUserBlocked || isReceiverBlocked}
         >
-          {isLoading ? "Sending..." : "Send"}
+          <img src="/send.svg" alt="" />
         </button>
       </div>
     </div>

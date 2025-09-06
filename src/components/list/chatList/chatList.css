@@ -3,6 +3,73 @@
     overflow: scroll;
     scrollbar-width: thin;
     scrollbar-color: rgba(17, 25, 40, 0.5) transparent;
+    margin-right: -10px;
+    
+    .userProfile {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 20px;
+        border-bottom: 1px solid #dddddd35;
+        background-color: rgba(17, 25, 40, 0.3);
+        justify-content: space-between;
+        
+        .avatarLabel {
+            position: relative;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            
+            &:hover .avatarOverlay {
+                opacity: 1;
+                
+            }
+            
+            .profileAvatar {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid #CF5AFF;
+            }
+            
+            .avatarOverlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.7);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 12px;
+                opacity: 0;
+                transition: opacity 0.2s ease;
+                padding: 10px;
+                text-align: center;
+            }
+        }
+        
+        .profileInfo {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            
+            .profileName {
+                font-weight: 600;
+                color: white;
+                font-size: 16px;
+            }
+            
+            .profileStatus {
+                font-size: 12px;
+                color: #00ff00;
+            }
+        }
+    }
+    
     .search {
         display: flex;
         align-items: center;
@@ -41,6 +108,7 @@
             border-radius: 50%;
         }
     }
+    
     .item {
         display: flex;
         align-items: center;
@@ -48,6 +116,40 @@
         padding: 20px;
         cursor: pointer;
         border-bottom: 1px solid #dddddd35;
+        transition: all 0.2s ease;
+        position: relative;
+
+        &.active {
+            background-color: #27242F !important;
+            border-right: 4px solid #CF5AFF;
+            
+            &::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 3px;
+                height: 60%;
+                background-color: #CF5AFF;
+                border-radius: 0 2px 2px 0;
+            }
+            
+            .texts span {
+                color: #CF5AFF;
+                font-weight: 600;
+            }
+            
+            .texts p {
+                color: #ffffff;
+            }
+        }
+
+        &:not(.active) {
+            &:hover {
+                background-color: rgba(39, 36, 47, 0.3);
+            }
+        }
 
         img {
             width: 50px;
@@ -61,15 +163,30 @@
             flex-direction: column;
             gap: 10px;
 
-            span {
+span {
                 font-weight: 500;
                 max-width: 100px;
+                color: white;
+                transition: color 0.2s ease;
             }
 
             p {
                 font-size: 14px;
                 font-weight: 300;
+                color: #a5a5a5;
+                transition: color 0.2s ease;
             }
         }
+    }
+}
+.userProfile-flex {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+@media (max-width: 756px) {
+    .chatList {
+        flex: none;
     }
 }

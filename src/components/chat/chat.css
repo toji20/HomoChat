@@ -3,8 +3,10 @@
     border-left: 1px solid #dddddd35;
     border-right: 1px solid #dddddd35;
     height: 100%;
+    width: 100% !important;
     display: flex;
     flex-direction: column;
+    background-color: #000000;
 
     .top {
         padding: 20px;
@@ -30,7 +32,7 @@
                 flex-direction: column;
                 gap: 5px;
 
-                spam {
+                span {
                     font-weight: bold;
                     font-size: 18px;
                 }
@@ -48,9 +50,9 @@
             gap: 20px;
 
             img {
-                width: 20px;
+                width: auto;
                 height: 20px;
-                cursor: pointer
+                cursor: pointer;
             }
         }
     }
@@ -67,17 +69,20 @@
 
         .message {
             display: flex;
-            max-width: 70%;
+            max-width: 70%; /* Максимальная ширина сообщения */
             flex-direction: column;
+            align-items: flex-start;
 
             &.own {
                 align-self: flex-end;
+                align-items: flex-end;
 
                 .texts {
+                    align-items: flex-end;
                     p {
-                        background-color: #5183fe;
+                        background-color: #CF5AFF;
                         color: white;
-                        border-radius: 0 0 5px 5px;
+                        border-radius: 20px;
                         margin-top: -7px;
                         word-wrap: break-word;
                         overflow-wrap: break-word;
@@ -88,46 +93,62 @@
                 }
             }
 
-            img {
+            img.avatar {
                 width: 30px;
                 height: 30px;
                 border-radius: 50%;
                 object-fit: cover;
+                margin-bottom: 5px;
             }
+            
             .texts {
-                flex: 1;
                 display: flex;
                 flex-direction: column;
                 gap: 5px;
+                max-width: 100%; /* Не превышать ширину контейнера */
 
-                img {
+                img.messageImg {
                     width: 100%;
+                    max-width: 400px; /* Ограничение ширины изображений */
                     height: 300px;
                     object-fit: cover;
                     border-radius: 10px;
+                    margin-bottom: 5px;
                 }
 
                 p {
-                    padding: 20px;
-                    border-radius: 10px;
-                    background-color: rgba(17, 25, 40, 0.3);
+                    padding: 20px 25px;
+                    background-color: #27242F;
                     color: white;
-                    border-radius: 0 0 5px 5px;
-                    margin-top: -7px;
+                    border-radius: 20px;
+                    margin-top: 0;
                     word-wrap: break-word;
-                        overflow-wrap: break-word;
-                        white-space: pre-wrap;
-                        max-width: 100%;
-                        overflow: hidden;
+                    overflow-wrap: break-word;
+                    white-space: pre-wrap;
+                    max-width: 400px; /* Максимальная ширина текстового сообщения */
+                    width: auto;
+                    overflow: hidden;
+                    line-height: 1.4;
+                    word-break: break-word; /* Перенос длинных слов */
                 }
-                span {
-                    font-size: 13px;
+                
+                span.timestamp {
+                    font-size: 11px;
                     color: #a5a5a5;
+                    margin-top: 2px;
+                    align-self: flex-start;
+                    padding-left: 10px;
                 }
             }
 
+&.own .texts span.timestamp {
+                align-self: flex-end;
+                padding-left: 0;
+                padding-right: 10px;
+            }
         }
     }
+    
     .bottom {
         padding: 20px;
         display: flex;
@@ -143,22 +164,29 @@
         }
 
         img {
-            width: 20px;
             height: 20px;
-            cursor: pointer
+            cursor: pointer;
         }
 
         .input {
             flex: 1;
             border: none;
             outline: none;
-            padding: 20px;
-            background-color: rgba(17, 25, 40, 0.5);
+            padding: 10px 20px;
+            background-color: #27242F;
             color: white;
-            border-radius: 10px;
+            border-radius: 40px;
             font-size: 16px;
             scrollbar-width: thin;
             scrollbar-color: rgba(17, 25, 40, 0.5) transparent;
+            display: flex;
+            align-items: center; /* Вертикальное центрирование */
+            height: 40px; /* Фиксированная высота для лучшего выравнивания */
+            
+            &::placeholder {
+                color: #a5a5a5;
+            }
+            
             &:disabled {
                 opacity: 0.5;
                 cursor: not-allowed;
@@ -168,20 +196,23 @@
         .emoji {
             position: relative;
             z-index: 5;
-
-            .picket {
+            img {
+                width: 40px;
+                height: 40px;
+            }
+            .picker {
                 position: absolute;
                 bottom: 50px;
-                left: 0;
+                right: 0;
             }
         }
 
         .sendButton {
             border: none;
+            background-color: none;
+            background: none;
             padding: 10px 20px;
             border-radius: 10px;
-            color: white;
-            background-color: #5183fe;
             font-weight: 500;
             cursor: pointer;
 
@@ -191,15 +222,362 @@
             }
         }
     }
-    
 }
+
 .messageImg {
     width: 100% !important;
+    max-width: 400px !important; /* Ограничение ширины */
     height: 300px !important;
     object-fit: cover;
     border-radius: 10px !important;
     z-index: 2;
-    border-radius: 5px 5px 0px 0px !important;
+}
 
+/* Дополнительные стили для лучшего отображения */
+.center .message:not(.own) .texts p {
+    border-radius: 25px 25px 25px 5px;
+}
 
+.center .message.own .texts p {
+    border-radius: 25px 25px 5px 25px;
+}
+
+.center .message .texts {
+    min-width: 0;
+}
+
+.center .message .texts p {
+    margin: 0;
+}
+
+/* Стили для очень длинных слов и ссылок */
+.center .message .texts p {
+    hyphens: auto; /* Автоматическое переносы слов */
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .center .message {
+        max-width: 85% !important; /* Больше места на мобильных */
+    }
+    
+    .center .message .texts p {
+        max-width: 300px !important; /* Уже на мобильных */
+    }
+    
+    .center .message .texts img.messageImg {
+        max-width: 300px !important;
+    }
+}
+
+/* Предотвращение расширения всего чата */
+.center {
+    min-width: 0; /* Важно: предотвращает расширение flex-контейнера */
+}
+/* В стилях для .message .texts */
+.center .message .texts {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    max-width: 100%;
+}
+
+.center .message .texts .messageImg {
+    width: 100%;
+    max-width: 400px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+.center .message .texts p {
+    padding: 15px 20px;
+    background-color: #27242F;
+    color: white;
+    border-radius: 50px;
+    margin: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    max-width: 400px;
+    width: auto;
+    overflow: hidden;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+/* Для сообщений с фото и текстом */
+.center .message .texts:has(.messageImg + p) p {
+    border-radius: 0 0 25px 25px;
+    margin-top: -5px;
+}
+
+.center .message.own .texts:has(.messageImg + p) p {
+    border-radius: 25px 25px 0 25px;
+}
+.chat {
+    /* существующие стили */
+    position: relative;
+}
+
+.top {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.backButton {
+    display: none; /* Скрываем по умолчанию */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.backButton img {
+    width: 24px;
+    height: 24px;
+    filter: invert(1); /* Делаем иконку белой */
+}
+.image-add-btn {
+    height: 30px;
+    width: auto;
+}
+/* Показываем кнопку назад только на мобильных */
+@media (max-width: 756px) {
+    .backButton {
+        display: block;
+    }
+    
+    .top .icons {
+        margin-left: auto;
+    }
+}
+/* Стили для экранов до 500px */
+@media (max-width: 500px) {
+    .chat {
+        width: 100vw !important;
+        height: 100vh !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        background-color: #000000;
+        .top {
+        padding: 12px;
+        position: sticky;
+        top: 0;
+        background-color: #000000;
+        z-index: 10;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    }
+
+    
+
+    .top .user {
+        gap: 12px;
+    }
+
+    .top .user img {
+        width: 55px !important;
+        height: 55px !important;
+    }
+
+    .top .user .texts span {
+        font-size: 16px;
+    }
+
+    .top .user .texts p {
+        font-size: 12px;
+    }
+
+    .top .icons {
+        gap: 15px;
+    }
+
+    .top .icons img {
+        height: 16px !important;
+    }
+
+    .backButton {
+        margin-right: 8px;
+    }
+
+    .backButton img {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    .chat .center {
+        padding: 15px;
+        padding-bottom: 60px; /* Добавляем отступ для нижней панели */
+    }
+
+    .center .message {
+        max-width: 70% !important;
+    }
+
+    .center .message .avatar {
+        width: 25px !important;
+        height: 25px !important;
+    }
+
+    .center .message .texts p {
+        max-width: 250px !important;
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+
+    .center .message .texts .messageImg {
+        max-width: 250px !important;
+        height: 200px !important;
+    }
+
+    .center .message .texts span.timestamp {
+        font-size: 10px;
+    }
+
+    .chat .bottom {
+        padding: 0px;
+        position: fixed;
+        bottom: 12px;
+        left: 0;
+        right: 0;
+        background-color: none;
+        border-top: none;
+        z-index: 10;
+        gap: 10px;
+    }
+
+    .bottom .icons {
+        gap: 12px;
+    }
+
+    .bottom .icons img {
+        height: 28px !important;
+        width: 28px !important;
+    }
+
+    .chat .bottom .input {
+        padding: 9px 80px 9px 43px;
+        font-size: 14px;
+        height: 36px;
+        position: relative;
+    }
+
+    .bottom .emoji .img-emoji {
+        width: 25px !important;
+        height: 25px !important;
+        position: absolute;
+        right: 55px;
+        top: -13px;
+    }
+
+    .bottom .picker {
+        bottom: 45px;
+        right: -10px;
+        transform: scale(0.9);
+    }
+
+    .bottom .sendButton {
+        padding: 8px 15px;
+        font-size: 14px;
+        position: absolute;
+        right: 4px;
+    }
+
+    /* Адаптация эмодзи-пикера для мобильных */
+    .emoji-picker-react {
+        width: 100% !important;
+        max-width: 320px !important;
+    }
+    .bottom .image-add-btn {
+        position: absolute;
+        left: 18px;
+        right: 0px;
+        bottom: 0;
+        top: 2px;
+        z-index: 1;
+    }
+    
+    /* Улучшение отображения для очень маленьких экранов */
+    @media (max-width: 350px) {
+        .top .user img {
+            width: 40px !important;
+            height: 40px !important;
+        }
+
+        .top .user .texts span {
+            font-size: 15px;
+        }
+
+        .bottom {
+            gap: 8px;
+        }
+
+        .bottom .icons {
+            gap: 8px;
+        }
+
+        .bottom .input {
+            font-size: 13px;
+            padding: 6px 12px;
+        }
+
+        .center .message .texts p {
+            max-width: 200px !important;
+            padding: 10px 14px;
+        }
+
+        .center .message .texts .messageImg {
+            max-width: 200px !important;
+            height: 180px !important;
+        }
+    }
+
+    /* Улучшение скролла на мобильных */
+    .center {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Оптимизация для iOS */
+    @supports (-webkit-touch-callout: none) {
+        .center {
+            padding-bottom: 100px;
+        }
+        
+        .bottom {
+            padding-bottom: calc(15px + env(safe-area-inset-bottom));
+        }
+    }
+}
+
+/* Дополнительные улучшения для всех мобильных устройств */
+@media (max-width: 756px) {
+    .chat {
+        border: none;
+    }
+    
+    /* Улучшение касаний на мобильных */
+    .bottom .icons label,
+
+.bottom .emoji img, 
+    .bottom .sendButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Увеличение области клика для кнопки назад */
+    .backButton {
+        min-height: 44px;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }

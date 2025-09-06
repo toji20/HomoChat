@@ -33,7 +33,6 @@ const App = () => {
       <>
       <List/>
       {chatId && <Chat/>}
-      {chatId && <Detail/>}
       </>
     ): (
     <Login/>

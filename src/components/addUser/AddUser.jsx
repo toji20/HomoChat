@@ -6,26 +6,54 @@ import { useUserStore } from "../../lib/userStore"
 
 const AddUser = () => {
   const [user, setUser] = useState(null)
+  const [isAlreadyAdded, setIsAlreadyAdded] = useState(false)
   const {currentUser} = useUserStore()
 
   const handleSearch = async (e) => {
     e.preventDefault()
     const formData = new FormData(e.target);
     const username = formData.get("username").trim();
+    
+    if (username === currentUser.username) {
+      setUser(null);
+      setIsAlreadyAdded(false);
+      return;
+    }
+    
     try {
       const userRef = collection(db, "users");
       const q = query(userRef, where("username", "==", username));
       const querySnapshot = await getDocs(q);
       
       if (!querySnapshot.empty) {
-        setUser(querySnapshot.docs[0].data());
+        const foundUser = querySnapshot.docs[0].data();
+        setUser(foundUser);
+        
+        // Проверяем, есть ли уже чат с этим пользователем
+        const currentUserChatRef = doc(db, "userChats", currentUser.uid);
+        const currentUserChatSnap = await getDoc(currentUserChatRef);
+        
+        if (currentUserChatSnap.exists()) {
+          const chats = currentUserChatSnap.data().chats || [];
+          const isExisting = chats.some(chat => chat.receiverId === foundUser.uid);
+          setIsAlreadyAdded(isExisting);
+        } else {
+          setIsAlreadyAdded(false);
+        }
+      } else {
+        setUser(null);
+        setIsAlreadyAdded(false);
       }
     } catch (error) {
       console.log(error);
+      setUser(null);
+      setIsAlreadyAdded(false);
     }
   }
 
   const handleAdd = async () => {
+    if (isAlreadyAdded) return;
+    
     try {
       // Создаем новый чат
       const newChatRef = doc(collection(db, "chats"));
@@ -68,6 +96,10 @@ const AddUser = () => {
         })
       });
 
+      // Сбрасываем состояние после добавления
+      setUser(null);
+      setIsAlreadyAdded(false);
+      
     } catch (error) {
       console.log(error);
     }
@@ -85,7 +117,13 @@ const AddUser = () => {
             <img src={user.avatar || "./avatar.png"} alt="" />
             <span>{user.username}</span>
           </div>
-          <button onClick={handleAdd}>Add User</button>
+          {isAlreadyAdded ? (
+            <button disabled className="already-added">
+              Already Added
+            </button>
+          ) : (
+            <button onClick={handleAdd}>Add User</button>
+          )}
         </div>
       )}
     </div>
