@@ -1,67 +1,182 @@
 .addUser {
-    width: max-content;
-    height: max-content;
+    width: 90%;
+    max-width: 500px;
     padding: 30px;
-    background-color: rgba(17, 25, 40, 0.845);
-    border-radius: 10px;
+    background-color: rgba(17, 10, 29, 0.9);
+    border-radius: 15px;
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 100;
+    box-shadow: 0 5px 25px rgba(135, 117, 216, 0.2);
+    border: 1px solid #8775D8;
+}
 
-    form {
-        display: flex;
-        gap: 20px;
+.addUser h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 24px;
+}
 
-        input {
-            padding: 20px;
-            border: none;
-            color: black;
-            border-radius: 5px;
-            font-size: 16px;
-            outline: none;
-        }
+.addUser form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
-        button {
-            padding: 20px;
-            border-radius: 10px;
-            border: none;
-            background-color: #5183fe;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-        }
+.addUser input {
+    padding: 15px;
+    border: 1px solid #484848;
+    background-color: #0A000D;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.addUser input:focus {
+    border-color: #8775D8;
+}
+
+.addUser form button {
+    padding: 15px;
+    border-radius: 8px;
+    border: none;
+    background-color: #8775D8;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.addUser form button:hover {
+    background-color: #6a5cad;
+}
+
+.user {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: rgba(135, 117, 216, 0.1);
+    border-radius: 10px;
+}
+
+.detail {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    overflow: hidden;
+}
+
+.detail img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #8775D8;
+}
+
+.detail span {
+    color: white;
+    font-weight: 500;
+}
+
+.user button {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.add-btn {
+    background-color: #8775D8;
+    transition: background-color 0.3s;
+}
+
+.add-btn:hover {
+    background-color: #6a5cad;
+}
+
+.already-added {
+    background-color: #484848;
+    cursor: not-allowed !important;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .addUser {
+        width: 85%;
+        padding: 20px;
     }
-
+    
+    .addUser h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .addUser form {
+        gap: 12px;
+    }
+    
+    .addUser input {
+        padding: 12px;
+        font-size: 14px;
+    }
+    
+    .addUser form button {
+        padding: 12px;
+    }
+    
     .user {
-        margin-top: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        padding: 15px;
+    }
+    
+    .detail {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .detail img {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .user button {
+        width: 100%;
+        padding: 12px;
+    }
+}
 
-        .detail {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            overflow: hidden;
-            img {
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                object-fit: cover;
-            }
-        }
-        button {
-            padding: 10px;
-            border-radius: 10px;
-            border: none;
-            background-color: #5183fe;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-        }
+@media (max-width: 480px) {
+    .addUser {
+        width: 90%;
+        padding: 15px;
+    }
+    
+    .addUser h2 {
+        font-size: 18px;
+    }
+    
+    .addUser input {
+        padding: 10px;
+    }
+    
+    .addUser form button {
+        padding: 10px;
+    }
+    
+    .detail img {
+        width: 50px;
+        height: 50px;
     }
 }

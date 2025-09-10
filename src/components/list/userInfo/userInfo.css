@@ -32,3 +32,16 @@
 .username {
     font-size: 16px;
 }
+.logout {
+    width: 25%;
+    max-width: 25%;
+    padding: 15px;
+    border: none;
+    background-color: #8775D8;
+    color: white;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 14px;
+}

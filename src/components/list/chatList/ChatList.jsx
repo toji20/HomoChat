@@ -181,7 +181,7 @@ const filteredChats = chats.filter((c) => c.user.username.toLowerCase().includes
                     key={chat.chatId} 
                     onClick={() => handleSelect(chat)}
                     style={{
-                        backgroundColor: chat?.isSeen ? "transparent" : "#5183fe",
+                        backgroundColor: chat?.isSeen ? "transparent" : "#27242F",
                     }}
                 >
                     <img src={chat.user?.avatar || "./avatar.png"} alt="" />

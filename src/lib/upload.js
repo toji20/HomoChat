@@ -2,7 +2,6 @@ import { useState } from "react";
 import { supabase } from "./supabase";
 import { v4 as uuidv4 } from 'uuid';
 
-// ✅ Кастомный хук (начинается с use)
 export function useGetMedia() {
   const [media, setMedia] = useState([]);
 
@@ -23,7 +22,6 @@ export function useGetMedia() {
   return { media, fetchMedia };
 }
 
-// ✅ Обычная функция загрузки (без хуков)
 export async function uploadImage(file) {
 
   const { data, error } = await supabase
@@ -35,5 +33,5 @@ export async function uploadImage(file) {
     console.error("Ошибка загрузки:", error);
   }
 
-  return data; // Можно вернуть результат загрузки
+  return data;
 }

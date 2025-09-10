@@ -8,11 +8,11 @@ import { supabase } from '../../lib/supabase';
 import { v4 as uuidv4 } from 'uuid';
 
 const Login = () => {
+    const [isLogin, setIsLogin] = useState(false);
     const [avatar, setAvatar] = useState({
         file: null,
         url: ""
     })
-
     const [loading, setLoading] = useState(false)
 
     const uploadImage = async (file) => {
@@ -148,75 +148,86 @@ const handleLogin = async (e) => {
     
     return (
         <div className='login'>
-            <div className="item">
-                <h2>Welcome back</h2>
-                <form onSubmit={handleLogin}>
-                    <input 
-                        type="email" 
-                        name='email' 
-                        placeholder='Email' 
-                        required 
-                        disabled={loading}
-                    />
-                    <input 
-                        type="password" 
-                        name='password' 
-                        placeholder='Password' 
-                        required 
-                        disabled={loading}
-                        minLength={6}
-                    />
-                    <button disabled={loading}>
-                        {loading ? "Loading..." : 'Sign In'}
-                    </button>
-                </form>
-            </div>
-            
-            <div className="separator"></div>
-            
-            <div className="item">
-                <h2>Create an account</h2>
-                <form onSubmit={handleRegister}>
-                    <label htmlFor="file">
-                        <img src={avatar.url || "./avatar.png"} alt="Avatar" />
-                        Upload an Image
-                    </label>
-                    <input 
-                        type="file" 
-                        id='file' 
-                        name='file' 
-                        style={{display: "none"}} 
-                        onChange={handleAvatarChange}
-                        accept="image/*"
-                        disabled={loading}
-                    />
-                    <input 
-                        type="text" 
-                        placeholder='Username' 
-                        name='username' 
-                        required 
-                        disabled={loading}
-                        minLength={3}
-                    />
-                    <input 
-                        type="email" 
-                        placeholder='Email' 
-                        name='email' 
-                        required 
-                        disabled={loading}
-                    />
-                    <input 
-                        type="password" 
-                        placeholder='Password' 
-                        name='password' 
-                        required 
-                        disabled={loading}
-                        minLength={6}
-                    />
-                    <button disabled={loading}>
-                        {loading ? "Creating account..." : 'Sign Up'}
-                    </button>
-                </form>
+            <div className={`container ${isLogin ? 'login-active' : 'register-active'}`}>
+                {/* Форма входа */}
+                <div className="form-container login-form">
+                    <h2>Welcome back</h2>
+                    <form onSubmit={handleLogin}>
+                        <input 
+                            type="email" 
+                            name='email' 
+                            placeholder='Email' 
+                            required 
+                            disabled={loading}
+                        />
+                        <input 
+                            type="password" 
+                            name='password' 
+                            placeholder='Password' 
+                            required 
+                            disabled={loading}
+                            minLength={6}
+                        />
+                        <button disabled={loading}>
+                            {loading ? "Loading..." : 'Sign In'}
+                        </button>
+                    </form>
+                    <p className="toggle-text">
+                        {`Don't have an account?`} 
+                        <span onClick={() => setIsLogin(false)}>Sign Up</span>
+                    </p>
+                </div>
+                
+                {/* Форма регистрации */}
+                <div className="form-container register-form">
+                    <h2>Create an account</h2>
+                    <form onSubmit={handleRegister}>
+                        <label htmlFor="file">
+                            <img src={avatar.url || "./avatar.png"} alt="Avatar" />
+                        </label>
+                        <p className='text'>Please confirm your name and enter your phone number</p>
+                        <input 
+                            type="file" 
+                            id='file' 
+                            name='file' 
+                            style={{display: "none"}} 
+                            onChange={handleAvatarChange}
+                            accept="image/*"
+                            disabled={loading}
+                        />
+                        <input 
+                            type="text" 
+                            placeholder='Username' 
+                            name='username' 
+                            required 
+                            disabled={loading}
+                            minLength={3}
+                        />
+                        <input 
+                            type="email" 
+                            placeholder='Email' 
+                            name='email' 
+                            required 
+                            disabled={loading}
+                        />
+                        <input
+
+type="password" 
+                            placeholder='Password' 
+                            name='password' 
+                            required 
+                            disabled={loading}
+                            minLength={6}
+                        />
+                        <button disabled={loading}>
+                            {loading ? "Creating account..." : 'Sign Up'}
+                        </button>
+                    </form>
+                    <p className="toggle-text">
+                        Already have an account? 
+                        <span onClick={() => setIsLogin(true)}>Sign In</span>
+                    </p>
+                </div>
             </div>
         </div>
     )

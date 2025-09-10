@@ -29,7 +29,6 @@ const AddUser = () => {
         const foundUser = querySnapshot.docs[0].data();
         setUser(foundUser);
         
-        // Проверяем, есть ли уже чат с этим пользователем
         const currentUserChatRef = doc(db, "userChats", currentUser.uid);
         const currentUserChatSnap = await getDoc(currentUserChatRef);
         
@@ -55,7 +54,6 @@ const AddUser = () => {
     if (isAlreadyAdded) return;
     
     try {
-      // Создаем новый чат
       const newChatRef = doc(collection(db, "chats"));
       await setDoc(newChatRef, {
         createdAt: serverTimestamp(),
@@ -107,8 +105,9 @@ const AddUser = () => {
 
   return (
     <div className='addUser'>
+      <h2>Add New User</h2>
       <form onSubmit={handleSearch}>
-        <input type="text" placeholder='Username' name='username'/>
+        <input type="text" placeholder='Enter username' name='username'/>
         <button>Search</button>
       </form>
       {user && (
@@ -122,7 +121,7 @@ const AddUser = () => {
               Already Added
             </button>
           ) : (
-            <button onClick={handleAdd}>Add User</button>
+            <button onClick={handleAdd} className="add-btn">Add User</button>
           )}
         </div>
       )}

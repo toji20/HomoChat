@@ -26,7 +26,6 @@ const Chat = () => {
   const isMobile = useMediaQuery({ maxWidth: 756 });
   const endRef = useRef(null);
 
-  // Функция для возврата к списку чатов
   const handleBackToChats = () => {
     changeChat(null, null);
   };
@@ -158,7 +157,7 @@ const Chat = () => {
           </button>
         )}
         
-        <div className="user">
+        <div className="user-info">
           <img src={user?.avatar || "./avatar.png"} alt="" />
           <div className="texts">
             <span className='userName'>{user?.username || "Unknown"}</span>
