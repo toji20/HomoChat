@@ -8,9 +8,9 @@ import { auth } from "./lib/firebase"
 import { onAuthStateChanged } from "firebase/auth"
 import { useUserStore } from "./lib/userStore"
 import { useChatStore } from "./lib/useChatStore"
+import "./index.css" // Добавим отдельный файл для стилей
 
 const App = () => {
-
   const {currentUser, isLoading, fetchUserInfo} = useUserStore()
   const {chatId} = useChatStore()
   
@@ -23,16 +23,22 @@ const App = () => {
       unSub()
     };
   },[fetchUserInfo]);
-  console.log(chatId);
 
-  if(isLoading) return <div className="loading">Loading...</div>
+  if(isLoading) return (
+    <div className="loading-container">
+      <div className="loading-spinner"></div>
+      <div className="loading-text">Loading...</div>
+    </div>
+  )
+  
   return (
-    <div className='conatiner'>
+    <div className='container'>
       {
       currentUser ? (
       <>
       <List/>
       {chatId && <Chat/>}
+      {chatId && <Detail/>}
       </>
     ): (
     <Login/>
